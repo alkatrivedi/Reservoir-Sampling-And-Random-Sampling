@@ -1,0 +1,40 @@
+1st TERMINAL
+cd /usr/local/kafka/bin
+./zookeeper-server-start.sh ../config/zookeeper.properties
+
+2nd TERMINAL
+cd /usr/local/kafka/bin
+./kafka-server-start.sh ../config/server.properties
+
+3rd TERMINAL
+cd /usr/local/kafka/bin
+./kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic mimic_ii_data
+./kafka-topics.sh --list --zookeeper localhost:2181
+CLOSE TERMINAL
+
+4th TERMINAL
+cd ADAproject
+python3 src/consumer.py mimic_ii_data
+
+5th TERMINAL
+cd ADAproject
+python3 src/producer.py dataset/admissions.csv mimic_ii_data --speed 10
+
+6th TERMINAL
+cd ADAproject
+python3 src/reservoir_sampling.py numberofK < input.txt
+
+7th TERMINAL
+cd ADAproject
+python3 src/random_sampling.py input.txt
+
+-------------------------------------------------------------------------
+FOLDER STRUCTURE:
+-group - 30
+	-src
+		-producer.py
+		-consumer.py
+		-reservoir_sampling.py
+		-random_sampling.py
+	-dataset
+		-admisions.csv
